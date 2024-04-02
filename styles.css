@@ -1,0 +1,66 @@
+body {
+  background-image: url('backgroundgif.gif');
+  background-repeat: repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+  overflow: hidden;
+}
+        .simon-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .simon-button {
+         margin: 10px;
+            cursor: pointer;
+            transition: transform 0.1s ease-in-out;
+        }
+
+        .simon-button:hover {
+            transform: scale(1.15);
+        }
+
+        /*.blue {
+           background-image: url("blue.gif");
+        }
+
+
+        .purple {
+            background-image: url("purple2.gif")
+        }
+
+        .pink {
+            background-image: url("pink.gif")
+        }
+
+        .yellow {
+            background-image: url("jaune.gif")
+        }
+
+        .red {
+            background-image: url("red.gif")
+        }*/
+
+        .active {
+            transform: scale(1.25);
+            filter: drop-shadow(0 0 0.95rem rgb(255, 255, 255));
+        }
+        .simon-button.purple > img {
+            width: 300px;
+        }
+
+        .simon-button.purple {
+            margin: 100px;
+        }
+        .simon-button.blue > img {
+            width: 500px;
+        }
+        .simon-button.pink > img {
+            width: 900px;
+        }
+        .simon-button.yellow > img {
+            width: 900px;
+        }
+      

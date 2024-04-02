@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="simon-container">
+        <div class="simon-button blue" data-color="blue"><img src="blue.gif" alt="Blue">
+            <audio id="blue">
+              <source src="Do.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+        <div class="simon-button purple" data-color="purple"><img src="purple2.gif" alt="Purple">
+            <audio id="purple">
+              <source src="Re.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+        <div class="simon-button pink" data-color="pink"><img src="pink.gif" alt="Pink">
+            <audio id="pink">
+              <source src="Mi.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+        <div class="simon-button yellow" data-color="yellow"><img src="jaune.gif" alt="yellow">
+            <audio id="yellow">
+              <source src="Fa.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+        <div class="simon-button red" data-color="red"><img src="red.gif" alt="Red">
+            <audio id="red">
+              <source src="Sol.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const simonSequence = [];
+            let userSequence = [];
+            let level = 1;
+            let strictMode = false;
+            const colors = ['blue', 'purple', 'pink', 'yellow', 'red'];
+            var oui = 0;
+
+            function generateSequence() {
+                simonSequence.push(colors[Math.floor(Math.random() * colors.length)]);
+            }
+
+            function playSequence() {
+                let i = 0;
+                const interval = setInterval(function() {
+                    flashButton(simonSequence[i]);
+                    i++;
+                    if (i >= simonSequence.length) {
+                        clearInterval(interval);
+                    }
+                }, 1000-oui);
+                oui = oui + 30;
+            }
+
+            function flashButton(color) {
+                const button = document.querySelector(`.simon-button[data-color="${color}"]`);
+                button.classList.add('active');
+                console.log(color);
+                a=document.getElementById(color);
+                a.currentTime=0;
+                a.play();
+                setTimeout(function() {
+                    button.classList.remove('active');
+                }, 500);
+            }
+
+            function checkSequence() {
+                for (let i = 0; i < userSequence.length; i++) {
+                    if (userSequence[i] !== simonSequence[i]) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            function checkEndLevel() {
+                if (userSequence.length === simonSequence.length) {
+                    if (checkSequence()) {
+                        level++;
+                        userSequence = [];
+                        setTimeout(function() {
+                            playGame();
+                        }, 1000);
+                    } else {
+                        if (strictMode) {
+                            alert("Game Over. Starting from Level 1.");
+                            level = 1;
+                            simonSequence.length = 0;
+                            userSequence.length = 0;
+                            playGame();
+                        } else {
+                            alert("Wrong Sequence. Try Again!");
+                            userSequence.length = 0;
+                            playSequence();
+                        }
+                    }
+                }
+            }
+
+            function playGame() {
+                generateSequence();
+                playSequence();
+            }
+
+            document.querySelectorAll('.simon-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const color = this.getAttribute('data-color');
+                    flashButton(color);
+                    userSequence.push(color);
+                    checkEndLevel();
+                });
+            });
+
+            playGame();
+        });
+    </script>
+</body>
+</html>
