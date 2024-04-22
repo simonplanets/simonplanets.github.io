@@ -45,22 +45,16 @@ body {
 
         .active {
             transform: scale(1.25);
-            filter: drop-shadow(0 0 0.95rem rgb(255, 255, 255));
+            filter: drop-shadow(0 0 0.75rem rgb(255, 255, 255));
         }
         .simon-button.purple > img {
-            width: 300px;
+            width: 200px;
         }
 
         .simon-button.purple {
             margin: 100px;
         }
         .simon-button.blue > img {
-            width: 500px;
-        }
-        .simon-button.pink > img {
-            width: 900px;
-        }
-        .simon-button.yellow > img {
-            width: 900px;
+            width: 320px;
         }
       
