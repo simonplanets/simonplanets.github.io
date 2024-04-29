@@ -57,4 +57,7 @@ body {
         .simon-button.blue > img {
             width: 370px;
         }
-      
+        }
+        .simon-button.red > img {
+            width: 300px;
+        }
