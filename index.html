@@ -32,8 +32,11 @@
               <source src="Sol.mp3" type="audio/mpeg">
             </audio>
         </div>
+        <audio id="correct">
+            <source src="Correct.mp3" type="audio/mpeg">
+        </audio>
     </div>
-
+    
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const simonSequence = [];
@@ -42,18 +45,21 @@
             let strictMode = false;
             const colors = ['blue', 'purple', 'pink', 'yellow', 'red'];
             var oui = 0;
-
+            let Pause = true;
+            let c = 0;
             function generateSequence() {
                 simonSequence.push(colors[Math.floor(Math.random() * colors.length)]);
             }
 
             function playSequence() {
                 let i = 0;
+                Pause = true;
                 const interval = setInterval(function() {
                     flashButton(simonSequence[i]);
                     i++;
                     if (i >= simonSequence.length) {
                         clearInterval(interval);
+                        Pause=false;
                     }
                 }, 1000-oui);
                 oui = oui + 30;
@@ -80,28 +86,70 @@
                 return true;
             }
 
+            function checkSequence2(i) {
+                if (userSequence[i] !== simonSequence[i]) {
+                    return false;
+                }
+            
+                return true;
+            }
+
             function checkEndLevel() {
-                if (userSequence.length === simonSequence.length) {
-                    if (checkSequence()) {
+               if (userSequence.length === simonSequence.length) {
+                   if (checkSequence()) {
                         level++;
                         userSequence = [];
                         setTimeout(function() {
                             playGame();
                         }, 1000);
-                    } else {
+                        c = 0;
+                        setTimeout(function() {
+                            b=document.getElementById("correct");
+                            b.currentTime=0;
+                            b.play();
+                        }, 400);
+                        
+
+                    }
+                    else {
                         if (strictMode) {
                             alert("Game Over. Starting from Level 1.");
                             level = 1;
                             simonSequence.length = 0;
                             userSequence.length = 0;
                             playGame();
-                        } else {
+                            c = 0;
+                        } 
+                        else {
                             alert("Wrong Sequence. Try Again!");
                             userSequence.length = 0;
                             playSequence();
+                            c = 0;
+                        }
+                    } 
+                }
+                else{
+                    if (checkSequence2(c)) {
+                        c = c+1;
+                    }
+                    else {
+                        if (strictMode) {
+                            alert("Game Over. Starting from Level 1.");
+                            level = 1;
+                            simonSequence.length = 0;
+                            userSequence.length = 0;
+                            playGame();
+                            c = 0;
+                        } 
+                        else {
+                            alert("Wrong Sequence. Try Again!");
+                            userSequence.length = 0;
+                            playSequence();
+                            c = 0;
                         }
                     }
                 }
+                
             }
 
             function playGame() {
@@ -111,10 +159,12 @@
 
             document.querySelectorAll('.simon-button').forEach(button => {
                 button.addEventListener('click', function() {
-                    const color = this.getAttribute('data-color');
-                    flashButton(color);
-                    userSequence.push(color);
-                    checkEndLevel();
+                    if(Pause==false){
+                        const color = this.getAttribute('data-color');
+                        flashButton(color);
+                        userSequence.push(color);
+                        checkEndLevel();
+                    }
                 });
             });
 
